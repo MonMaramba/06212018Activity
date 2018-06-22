@@ -3,7 +3,7 @@
 var APIKey = "13b3486c16994126b8970eda3c8a7dd1";
 
 // Here we are building the URL we need to query the database
-var queryURL = "https://developer.nytimes.com/" + APIKey;
+var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + APIKey;
 
 
 $.ajax({
@@ -18,15 +18,19 @@ $.ajax({
 
       // Log the resulting object
       console.log(response);
+      for (var i = 0; i < results.length; i++) {
+        var gifDiv = $("<div class='item'>");
 
-      // Transfer content to HTML
-      $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-      $(".wind").text("Wind Speed: " + response.wind.speed);
-      $(".humidity").text("Humidity: " + response.main.humidity);
-      $(".temp").text("Temperature (F) " + response.main.temp);
+        var rating = results[i].rating;
 
-      // Log the data in the console as well
-      console.log("Wind Speed: " + response.wind.speed);
-      console.log("Humidity: " + response.main.humidity);
-      console.log("Temperature (F): " + response.main.temp);
+        var p = $("<p>").text("Rating: " + rating);
+
+        var personImage = $("<img>");
+        personImage.attr("src", results[i].images.fixed_height.url);
+
+        gifDiv.prepend(p);
+        gifDiv.prepend(personImage);
+
+        $("#gifs-appear-here").prepend(gifDiv);
+      }
     });
